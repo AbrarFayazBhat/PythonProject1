@@ -102,6 +102,7 @@ def calculate_EI(feeling,satisfication,energy,valid_days):
 def calculate_DCI(valid_days,expected_days):
     return round((valid_days/expected_days)*100,2)
 
+##calling all functions
 tpi=calculate_TPI(5,36)
 print(f'Tech Productivity Index is: {tpi}')
 
