@@ -92,11 +92,11 @@ def calculate_EI(feeling,satisfication,energy,valid_days):
         values=ws.cell(row,energy).value
         if values is not None:
             if values=="High":
-                energy_level.append(5)
-            elif values=="Medium":
-                energy_level.append(4)
-            else:
                 energy_level.append(3)
+            elif values=="Medium":
+                energy_level.append(2)
+            else:
+                energy_level.append(1)
     return round(math.fsum(feeling_level+satisfication_level+energy_level)/(3*valid_days),2)
 ##DATA CONTINUITY INDEX
 def calculate_DCI(valid_days,expected_days):
@@ -128,5 +128,5 @@ dci=calculate_DCI(36,36)
 print(f'Data Continuity index is: {dci}')
 
 # CALCULATING PERSONAL ACTIVITY INDEX
-PAI=(0.15*tpi)+(0.20*aai)+(0.15*Phai)+(0.15*tui)+(0.2*Sri)+(0.10*ei)+(0.05*dci)
+PAI=round((0.15*tpi)+(0.20*aai)+(0.15*Phai)+(0.15*tui)+(0.2*Sri)+(0.10*ei)+(0.05*dci),2)
 print(f'Personal Activity Index is: {PAI}')
