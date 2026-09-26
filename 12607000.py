@@ -1,22 +1,37 @@
 ##MY DATA MY STORY 
-#importing openpyxl and math library
+#importing required libraries
 import openpyxl
 import math
+
+# Loading the Excel workbook in read-only mode 
+# data_only=True reads the calculated values of Excel formulas
 wb=openpyxl.load_workbook("12607000.xlsx", read_only=True,data_only=True)
+
+# Selecting the Daily Log worksheet
 ws=wb["Daily Log"]
+
+#---------------------------------
 #CALCULATE TECH PRODUCTIVITY INDEX
+#---------------------------------
 def calculate_TPI(column,valid_days,end_row):
+    # list to store valid productivity values
     values=[]
     for row in range(6,end_row+1):
         value=ws.cell(row,column).value
+        # ignore empty cells
         if value is not None:
             values.append(value)
+    # calculate average productivity per valid day
     if valid_days>0:
         return round(math.fsum(values)/valid_days,2)
+    # return 0 if there is no valid day
     else:
         return 0
-##CALUCULATE ACADEMIC ACTIVITY INDEX
+# --------------------------------------------------------- 
+#  ACADEMIC ACTIVITY INDEX (AAI) 
+#  ---------------------------------------------------------
 def calculate_AAI(study_column,class_column,valid_days,end_row):
+    # Lists to store study and class minutes
     study_minutes=[]
     for row in range(6,end_row+1):
         value=ws.cell(row,study_column).value
@@ -27,12 +42,16 @@ def calculate_AAI(study_column,class_column,valid_days,end_row):
         value=ws.cell(row,class_column).value
         if value is not None:
             class_minutes.append(value)
+    # Calculate average academic activity per valid day
     if valid_days>0:
             return round(math.fsum(study_minutes+class_minutes)/valid_days,2) 
     else:
         return 0
+#---------------------------------
 ##CALCULATE PHYSICAL ACTIVITY INDEX
+#----------------------------------
 def calculate_PHAI(column,valid_days,end_row):
+    # List to store fitness/activity minutes
     fitness_minutes=[]
     for row in range(6,end_row+1):
         value=ws.cell(row,column).value
@@ -42,7 +61,9 @@ def calculate_PHAI(column,valid_days,end_row):
             return round(math.fsum(fitness_minutes)/valid_days,2)
     else:
         return 0
+#-----------------------------------
 ##CALCULATE SLEEP AND RECOVERY INDEX
+#------------------------------------
 def calculate_SRI(column,valid_days,end_row):
     sleep_minutes=[]
     for row in range(6,end_row+1):
@@ -53,7 +74,9 @@ def calculate_SRI(column,valid_days,end_row):
             return round(math.fsum(sleep_minutes)/valid_days,2)
     else:
         return 0
+#----------------------------------
 ##CALCULATE ACTIVITY BALANCE INDEX
+#----------------------------------
 def calculate_ABI(freetime,valid_days,end_row):
     free_minutes=[]
     for row in range(6,end_row+1):
@@ -64,8 +87,9 @@ def calculate_ABI(freetime,valid_days,end_row):
         return round(math.fsum(free_minutes)/valid_days,2)
     else:
         return 0
-
+#----------------------------------
 ##CALCULATE TIME UTILIZATION INDEX
+#----------------------------------
 def calculate_TUI(column,valid_days,end_row):
     utilization_minutes=[]
     for row in range(6,end_row+1):
@@ -76,10 +100,12 @@ def calculate_TUI(column,valid_days,end_row):
             return round(math.fsum(utilization_minutes)/valid_days,2)
     else:
         return 0
+#-------------------------------
 ##CALCULATE EXPERIENCE INDEX(EI)
+#--------------------------------
 def calculate_EI(feeling,satisfication,energy,valid_days,end_row):
     feeling_level=[]
-    # CALCULATE SUM OF FEELING LEVELS
+    # CONVERT FEELING INTO NUMERICAL VALUES
     for row in range(6,end_row+1):
         values=ws.cell(row,feeling).value
         if values is not None:
@@ -94,7 +120,7 @@ def calculate_EI(feeling,satisfication,energy,valid_days,end_row):
             else:
                feeling_level.append(1)
     satisfication_level=[]
-    # CALCULATING SUM OF SATISFICATION LEVELS
+    # CONVERT SATISFACTION INTO NUMERICAL VALUES
     for row in range(6,end_row+1):
        values=ws.cell(row,satisfication).value
        if values is not None:
@@ -109,7 +135,7 @@ def calculate_EI(feeling,satisfication,energy,valid_days,end_row):
             else:
                 satisfication_level.append(1)
     energy_level=[]
-    # CALCULATING SUM OF ENERGY LEVELS
+    # CONVERT ENERGY LEVEL INTO NUMERICAL VALUES
     for row in range(6,end_row+1):
         values=ws.cell(row,energy).value
         if values is not None:
@@ -119,15 +145,22 @@ def calculate_EI(feeling,satisfication,energy,valid_days,end_row):
                 energy_level.append(2)
             else:
                 energy_level.append(1)
+    # Calculate average experience score
     if valid_days>0:
             return round(math.fsum(feeling_level+satisfication_level+energy_level)/(3*valid_days),2)
     else:
         return 0
 ##DATA CONTINUITY INDEX
 def calculate_DCI(valid_days,expected_days):
-    return round((valid_days/expected_days)*100,2)
-
+    if expected_days>0:
+        return round((valid_days/expected_days)*100,2)
+    if valid_days>expected_days:
+        return 0
+    else:
+        return 0
+#-----------------------
 ##calling all functions
+#----------------------
 tpi=calculate_TPI(5,36,42)
 print(f'Tech Productivity Index is: {tpi}')
 
@@ -153,5 +186,7 @@ dci=calculate_DCI(36,36)
 print(f'Data Continuity index is: {dci}')
 
 # CALCULATING PERSONAL ACTIVITY INDEX
+# Calculate the weighted Personal Activity Index 
+# Each index contributes according to its assigned weight
 PAI=round((0.15*tpi)+(0.20*aai)+(0.15*Phai)+(0.15*tui)+(0.2*Sri)+(0.10*ei)+(0.05*dci),2)
 print(f'Personal Activity Index is: {PAI}')
