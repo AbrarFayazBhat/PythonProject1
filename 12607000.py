@@ -11,7 +11,10 @@ def calculate_TPI(column,valid_days,end_row):
         value=ws.cell(row,column).value
         if value is not None:
             values.append(value)
-    return round(math.fsum(values)/valid_days,2)
+    if valid_days>0:
+        return round(math.fsum(values)/valid_days,2)
+    else:
+        return 0
 ##CALUCULATE ACADEMIC ACTIVITY INDEX
 def calculate_AAI(study_column,class_column,valid_days,end_row):
     study_minutes=[]
@@ -24,7 +27,10 @@ def calculate_AAI(study_column,class_column,valid_days,end_row):
         value=ws.cell(row,class_column).value
         if value is not None:
             class_minutes.append(value)
-    return round(math.fsum(study_minutes+class_minutes)/valid_days,2)
+    if valid_days>0:
+            return round(math.fsum(study_minutes+class_minutes)/valid_days,2) 
+    else:
+        return 0
 ##CALCULATE PHYSICAL ACTIVITY INDEX
 def calculate_PHAI(column,valid_days,end_row):
     fitness_minutes=[]
@@ -32,7 +38,10 @@ def calculate_PHAI(column,valid_days,end_row):
         value=ws.cell(row,column).value
         if value is not None:
             fitness_minutes.append(value)
-    return round(math.fsum(fitness_minutes)/valid_days,2)
+    if valid_days>0:
+            return round(math.fsum(fitness_minutes)/valid_days,2)
+    else:
+        return 0
 ##CALCULATE SLEEP AND RECOVERY INDEX
 def calculate_SRI(column,valid_days,end_row):
     sleep_minutes=[]
@@ -40,7 +49,10 @@ def calculate_SRI(column,valid_days,end_row):
         value=ws.cell(row,column).value
         if value is not None:
             sleep_minutes.append(value)
-    return round(math.fsum(sleep_minutes)/valid_days,2)
+    if valid_days>0:
+            return round(math.fsum(sleep_minutes)/valid_days,2)
+    else:
+        return 0
 ##CALCULATE ACTIVITY BALANCE INDEX
 def calculate_ABI(freetime,valid_days,end_row):
     free_minutes=[]
@@ -48,7 +60,10 @@ def calculate_ABI(freetime,valid_days,end_row):
         value=ws.cell(row,freetime).value
         if value is not None:
             free_minutes.append(value)
-    return round(math.fsum(free_minutes)/valid_days,2)
+    if valid_days>0:
+        return round(math.fsum(free_minutes)/valid_days,2)
+    else:
+        return 0
 
 ##CALCULATE TIME UTILIZATION INDEX
 def calculate_TUI(column,valid_days,end_row):
@@ -57,7 +72,10 @@ def calculate_TUI(column,valid_days,end_row):
         value=ws.cell(row,column).value 
         if value is not None:
             utilization_minutes.append(value)
-    return round(math.fsum(utilization_minutes)/valid_days,2)
+    if valid_days>0:
+            return round(math.fsum(utilization_minutes)/valid_days,2)
+    else:
+        return 0
 ##CALCULATE EXPERIENCE INDEX(EI)
 def calculate_EI(feeling,satisfication,energy,valid_days,end_row):
     feeling_level=[]
@@ -101,7 +119,10 @@ def calculate_EI(feeling,satisfication,energy,valid_days,end_row):
                 energy_level.append(2)
             else:
                 energy_level.append(1)
-    return round(math.fsum(feeling_level+satisfication_level+energy_level)/(3*valid_days),2)
+    if valid_days>0:
+            return round(math.fsum(feeling_level+satisfication_level+energy_level)/(3*valid_days),2)
+    else:
+        return 0
 ##DATA CONTINUITY INDEX
 def calculate_DCI(valid_days,expected_days):
     return round((valid_days/expected_days)*100,2)
