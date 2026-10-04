@@ -151,35 +151,42 @@ def calculate_EI(feeling,satisfication,energy,valid_days,end_row):
     else:
         return 0
 ##DATA CONTINUITY INDEX
-def calculate_DCI(valid_days,expected_days):
-    if expected_days>0:
-        return round((valid_days/expected_days)*100,2)
-    if valid_days>expected_days:
+def calculate_DCI(valid_days, expected_days):
+    if expected_days <= 0:
+        print("Error: Expected days must be greater than 0.")
         return 0
-    else:
+
+    if valid_days < 0:
+        print("Error: Valid days cannot be negative.")
         return 0
+
+    if valid_days > expected_days:
+        print("Error: Valid days cannot be greater than expected days.")
+        return 0
+
+    return round((valid_days / expected_days) * 100, 2)
 #-----------------------
 ##calling all functions
 #----------------------
-tpi=calculate_TPI(5,36,42)
+tpi=calculate_TPI(5,36,41)
 print(f'Tech Productivity Index is: {tpi}')
 
-aai=calculate_AAI(4,6,36,42)
+aai=calculate_AAI(4,6,36,41)
 print(f'Academic Activity Index is: {aai}')
 
-Phai=calculate_PHAI(3,36,42)
+Phai=calculate_PHAI(3,36,41)
 print(f'Physical Activity Index is: {Phai}')
 
-Sri=calculate_SRI(2,36,42)
+Sri=calculate_SRI(2,36,41)
 print(f'Sleep and  Recovery Index is: {Sri}')
 
-abi=calculate_ABI(10,36,42)
+abi=calculate_ABI(10,36,41)
 print(f'Activity Balance Index is: {abi}')
 
-tui=calculate_TUI(9,36,42)
+tui=calculate_TUI(9,36,41)
 print(f'Time Utilization Index is: {tui}')
 
-ei=calculate_EI(11,12,13,36,42)
+ei=calculate_EI(11,12,13,36,41)
 print(f'Experience Index is: {ei}')
 
 dci=calculate_DCI(36,36)
